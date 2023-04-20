@@ -7,11 +7,11 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // Get task route
-router.get('/', authMiddleware, async (req, res) => {
+router.get('/:id', authMiddleware, async (req, res) => {
   try {
     const tasks = await Task.findAll({
       where: {
-        userId: req.userId,
+        userId: req.params.id,
       },
     });
 
@@ -22,13 +22,13 @@ router.get('/', authMiddleware, async (req, res) => {
 });
 
 // Post task route
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/:id', authMiddleware, async (req, res) => {
   try {
     const { title } = req.body;
 
     const task = await Task.create({
       title,
-      userId: req.userId,
+      userId: req.params.id,
     });
 
     res.status(201).json(task);
