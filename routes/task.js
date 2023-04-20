@@ -13,6 +13,7 @@ router.get('/', authMiddleware, async (req, res) => {
     const tasks = await Task.findAll({
       where: {
         UserId: req.user.id,
+        order: [['createdAt', 'DESC']]
       },
     });
 
@@ -28,7 +29,7 @@ router.post('/', authMiddleware, async (req, res) => {
   try {
     const { title } = req.body;
 
-    console.log(req.user.id,'jjj')
+    console.log(req.user.id, 'jjj')
 
     const task = await Task.create({
       title,
@@ -70,7 +71,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
 });
 
 // Delete task route
-router.delete('/:id', authMiddleware,  async (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
 
