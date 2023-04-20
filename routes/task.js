@@ -13,8 +13,9 @@ router.get('/', authMiddleware, async (req, res) => {
     const tasks = await Task.findAll({
       where: {
         UserId: req.user.id,
-        order: [['createdAt', 'DESC']]
       },
+      order: [['createdAt', 'DESC']]
+
     });
 
     res.json(tasks);
