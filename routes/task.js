@@ -7,11 +7,12 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // Get task route
-router.get('/:id', authMiddleware, async (req, res) => {
+router.get('/', authMiddleware, async (req, res) => {
+
   try {
     const tasks = await Task.findAll({
       where: {
-        userId: req.params.id,
+        userId: parseInt(req.user.id),
       },
     });
 
@@ -22,13 +23,13 @@ router.get('/:id', authMiddleware, async (req, res) => {
 });
 
 // Post task route
-router.post('/:id', authMiddleware, async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
   try {
     const { title } = req.body;
 
     const task = await Task.create({
       title,
-      userId: req.params.id,
+      userId: parseInt(req.user.id),
     });
 
     res.status(201).json(task);
@@ -46,7 +47,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     const task = await Task.findOne({
       where: {
         id,
-        userId: req.userId,
+        userId: parseInt(req.user.id),
       },
     });
 
@@ -73,7 +74,7 @@ router.delete('/:id', authMiddleware,  async (req, res) => {
     const task = await Task.findOne({
       where: {
         id,
-        userId: req.userId,
+        userId: parseInt(req.user.id),
       },
     });
 
